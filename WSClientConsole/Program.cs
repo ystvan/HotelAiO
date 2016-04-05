@@ -18,7 +18,7 @@ namespace WSClientConsole
 
             Console.Write(
                 "1.List hotels\n2.Select a hotel\n3.List all hotels in Roskilde\n4.List all single rooms for hotels in Roskilde\n5.Update holtel_No 3\n6.Insert a new hotel");
-            Console.Write("\n7.Delete a hotel\n8.Update Room prices\n0.End\nPlease enter your choice:");
+            Console.Write("\n7.Delete a hotel\n8.Update Room prices\n9.List all single rooms in Roskilde using a View\n10.Update Room Prices\n0.End\nPlease enter your choice:");
             int choice = int.Parse(Console.ReadLine());
             Console.Clear();
             while (choice != 0)
@@ -49,10 +49,16 @@ namespace WSClientConsole
                     case 8:
                         Exercise8();
                         break;
+                    case 9:
+                        Exercise9();
+                        break;
+                    case 10:
+                        Exercise10();
+                        break;
                 }
                 Console.Write(
                     "1.List hotels\n2.Select a hotel\n3.List all hotels in Roskilde\n4.List all single rooms for hotels in Roskilde\n5.Update holtel_No 3\n6.Insert a new hotel");
-                Console.Write("\n7.Delete a hotel\n8.Update Room prices\n0.End\nPlease enter your choice:");
+                Console.Write("\n7.Delete a hotel\n8.Update Room prices\n9.List all single rooms in Roskilde using a View\n10.Update Room Prices\n0.End\nPlease enter your choice:");
                 choice = int.Parse(Console.ReadLine());
                 Console.Clear();
             }
@@ -63,13 +69,194 @@ namespace WSClientConsole
 
         }
 
+        private static void Exercise10()
+        {
+            //Console.WriteLine("Exercise 10");
+            //const string ServerUrl = "http://localhost:50002";
+            //HttpClientHandler handler = new HttpClientHandler();
+            //handler.UseDefaultCredentials = true;
+            //using (var client = new HttpClient(handler))
+            //{
+            //    client.BaseAddress = new Uri(ServerUrl);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    try
+            //    {
+            //        var response = client.GetAsync("api/SingleRoomsRoskildes").Result;
+            //        if (response.IsSuccessStatusCode)
+            //        {
+            //            IEnumerable<SingleRoomsRoskilde> singleRoomsR_Query = response.Content.ReadAsAsync<IEnumerable<SingleRoomsRoskilde>>().Result;
+            //            foreach (var room in singleRoomsR_Query)
+            //            {
+            //                try
+            //                {
+            //                    Console.WriteLine("Room Price before : " + room.ToString());
+            //                    //increase 20%
+            //                    room.Price *= 1.2;
+            //                    //string roomJson = JsonConvert.SerializeObject(room);
+            //                    //StringContent content = new StringContent(roomJson, Encoding.UTF8, "application/json");
+            //                    string putRoom = "api/rooms/" + room.Room_No;
+            //                    var roomResponse = client.PutAsJsonAsync(putRoom, room).Result;//.PutAsync(putRoom, content).Result;
+            //                    Console.WriteLine("StatusCode " + roomResponse.StatusCode);
+
+            //                    Console.WriteLine(room.ToString());
+            //                    if (response.IsSuccessStatusCode)
+            //                    {
+            //                        Console.WriteLine("Succes: updated the room no: " + room.Room_No);
+            //                        Console.WriteLine("Room price after " + room.Price);
+            //                    }
+            //                    else
+            //                    {
+            //                        Console.WriteLine("Upps something went wrong for room no: " + room.Room_No);
+            //                    }
+            //                }
+            //                catch (Exception)
+            //                {
+            //                    throw;
+            //                }
+            //            }
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine("Error exercise 1" + ex.Message);
+            //    }
+            //    Console.ReadLine();
+            //}
+
+        }
+
+        private static void Exercise9()
+        {
+            //Console.WriteLine("Exercise 9");
+            //const string ServerUrl = "http://localhost:5645";
+            //HttpClientHandler handler = new HttpClientHandler();
+            //handler.UseDefaultCredentials = true;
+            //using (var client = new HttpClient(handler))
+            //{
+            //    client.BaseAddress = new Uri(ServerUrl);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    try
+            //    {
+            //        var response = client.GetAsync("api/SingleRoomsRoskildes").Result;
+            //        if (response.IsSuccessStatusCode)
+            //        {
+            //            IEnumerable<SingleRoomsRoskilde> singleRoomsR_Query = response.Content.ReadAsAsync<IEnumerable<SingleRoomsRoskilde>>().Result;
+            //            foreach (var sr in singleRoomsR_Query)
+            //            {
+            //                Console.WriteLine(sr);
+            //            }
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine("Error exercise 1" + ex.Message);
+            //    }
+            //    Console.ReadLine();
+            //}
+
+        }
+
         private static void Exercise8()
         {
-            throw new NotImplementedException();
+            //Update room prices
+
+            const string ServerUrl = "http://localhost:5645";
+            List<Hotel> hotellist = new List<Hotel>();
+            List<Room> roomlist = new List<Room>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(ServerUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                try
+                {
+                    var response = client.GetAsync("api/Hotels").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var hotels = response.Content.ReadAsAsync<IEnumerable<Hotel>>().Result;
+                        var roskildeHotels = hotels.Where(x => x.Hotel_Address.Contains("Roskilde")).ToList();
+                        hotellist.AddRange(roskildeHotels);
+                        Console.WriteLine("Hotels in roskilde");
+                        foreach (var rh in roskildeHotels)
+                        {
+                            Console.WriteLine(rh.ToString());
+                        }
+
+                        var roomresponse = client.GetAsync("api/Rooms").Result;
+
+                        if (roomresponse.IsSuccessStatusCode)
+                        {
+                            var rooms = roomresponse.Content.ReadAsAsync<IEnumerable<Room>>().Result;
+
+                            var roskildeRoom = from r in rooms
+                                               join h in hotellist on r.Hotel_No equals h.Hotel_No
+                                               where r.Room_Type == "S"
+                                               select new Room()
+                                               {
+                                                   Hotel_No = r.Hotel_No,
+                                                   Room_Price = r.Room_Price,
+                                                   Room_No = r.Room_No,
+                                                   Room_Type = r.Room_Type
+                                               };
+
+                            roomlist.AddRange(roskildeRoom.OrderBy(x => x.Hotel_No).ToList());
+
+                            Console.WriteLine("Will update so many rooms: " + roomlist.Count);
+
+                            foreach (var room in roomlist)
+                            {
+                                try
+                                {
+                                    Console.WriteLine("Room Price before : " + room.ToString());
+                                    //increase 20%
+                                    room.Room_Price *= 1.2;
+                                    string roomJson = JsonConvert.SerializeObject(room);
+                                    StringContent content = new StringContent(roomJson, Encoding.UTF8, "application/json");
+                                    string putRoom = "api/rooms/" + room.Room_No;
+                                    var roomResponse = client.PutAsync(putRoom, content).Result;
+                                    Console.WriteLine("StatusCode " + roomResponse.StatusCode);
+                                    Console.WriteLine(room.ToString());
+                                    if (response.IsSuccessStatusCode)
+                                    {
+                                        Console.WriteLine("Succes: updated the room no: " + room.Room_No);
+                                        Console.WriteLine("Room price after " + room.Room_Price);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Upps something went wrong for room no: " + room.Room_No);
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                    throw;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("response error status code: " + response.StatusCode);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("response error status code: " + response.StatusCode);
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+
         }
 
         private static void Exercise7()
         {
+
+            // Delete a hotel:
+
             Console.WriteLine("Exercise 7");
             const string ServerUrl = "http://localhost:5645";
             Console.WriteLine("Enter Hotel_No to delete:");
@@ -81,7 +268,7 @@ namespace WSClientConsole
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 try
                 {
-                    string deleteUrl = "api/hotels/" + deleteHotelNo;
+                    string deleteUrl = "api/Hotels/" + deleteHotelNo;
                     var response = client.DeleteAsync(deleteUrl).Result;
 
                     Console.WriteLine("Delete Async " + deleteUrl);
@@ -108,6 +295,8 @@ namespace WSClientConsole
 
         private static void Exercise6()
         {
+            // Insert a new Hotel
+
             Console.WriteLine("Exercise 6");
             const string ServerUrl = "http://localhost:5645";
             
