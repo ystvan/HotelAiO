@@ -1,0 +1,68 @@
+﻿<Page
+    x:Class="HotelMVVM.View.HotelPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HotelMVVM.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="using:HotelMVVM.ViewModel"
+    mc:Ignorable="d">
+
+    <Page.DataContext>
+        <viewModel:HotelViewModel/>
+    </Page.DataContext>
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <StackPanel Orientation="Horizontal" x:Name="MainPanel">
+            <ListView x:Name="HotelDbListView" 
+                      ItemsSource="{Binding HotelCatalogSingleton.Hotels, Mode=TwoWay}" 
+                      Margin="0,0,662,10"
+                      HorizontalAlignment="Left"/>
+            <StackPanel x:Name="RightPanel">
+
+                <StackPanel x:Name="HotelsControlTextPanel"
+                            Orientation="Vertical"
+                            VerticalAlignment="Top">
+                    
+                    <TextBlock x:Name="HotelNumberTextBlock" 
+                               Text="Hotel Number"/>
+                    <TextBox x:Name="HotelNumberTextBox" 
+                             PlaceholderText="Specify an ID"
+                             Text="{Binding NewHotel.Hotel_No, Mode=TwoWay}"/>
+                    <TextBlock x:Name="HotelNameTextBlock" 
+                               Text="Hotel Name"/>
+                    <TextBox x:Name="HotelNameTextBox" 
+                             PlaceholderText="Specify a name"
+                             Text="{Binding NewHotel.Hotel_Name, Mode=TwoWay}"/>
+                    <TextBlock x:Name="HotelAddressTextBlock" 
+                               Text="Hotel Address"/>
+                    <TextBox x:Name="HotelAddressTextBox" 
+                             PlaceholderText="Specify an address"
+                             Text="{Binding NewHotel.Hotel_Address, Mode=TwoWay}"/>
+                    
+                </StackPanel>
+                
+                <StackPanel x:Name="HotelsControlButtonsPanel"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Bottom">
+
+                    <Button Content="Create Hotel" 
+                            BorderBrush="Black"
+                            Margin="10,10,10,10"
+                            Command="{Binding CreateCommand}"/>
+                    
+                    <Button Content="Delete Hotel" 
+                            BorderBrush="Black" 
+                            Margin="0,10,10,10"/>
+                    
+                    <Button Content="Update Hotel" 
+                            BorderBrush="Black" 
+                            Margin="0,10,10,10"/>
+                </StackPanel>
+                
+            </StackPanel>
+        </StackPanel>
+        
+    </Grid>
+</Page>
