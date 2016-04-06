@@ -49,6 +49,30 @@ namespace HotelMVVM.Persistency
             }
         }
 
+        public void DeleteHotel(Hotel selectedHotel)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(ServerUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var hotel = selectedHotel.Hotel_No;
+                try
+                {
+                    string deleteUrl = "api/Hotels/" + hotel;
+                    var response = client.DeleteAsync(deleteUrl).Result;
+
+                    
+                }
+                catch (Exception ex)
+                {
+                    new MessageDialog(ex.Message).ShowAsync();
+                }
+                
+            };
+        }
+
         public void SaveHotel(Hotel hotel)
         {
             using (var client = new HttpClient(handler))
@@ -56,11 +80,13 @@ namespace HotelMVVM.Persistency
                 client.BaseAddress = new Uri(ServerUrl);
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
                 try
                 {
                     string postBody = JsonConvert.SerializeObject(hotel);
                     var response = client.PostAsync("api/Hotels", new StringContent(postBody, Encoding.UTF8, "application/json")).Result;
                 }
+
                 catch (Exception ex)
                 {
                     new MessageDialog(ex.Message).ShowAsync();
@@ -68,5 +94,7 @@ namespace HotelMVVM.Persistency
             }
 
         }
+
+
     }
 }

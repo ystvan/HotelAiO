@@ -43,7 +43,16 @@ namespace HotelMVVM.Handler
 
         public void DeleteHotel()
         {
-            //HotelViewModel.HotelCatalogSingleton.Remove(this);
+            //HotelViewModel.HotelCatalogSingleton.Remove(HotelViewModel.SelectedHotel);
+
+            new PersistenceFacade().DeleteHotel(HotelViewModel.SelectedHotel);
+            var hotels = new PersistenceFacade().GetHotels();
+
+            HotelViewModel.HotelCatalogSingleton.Hotels.Clear();
+            foreach (var h in hotels)
+            {
+                HotelViewModel.HotelCatalogSingleton.Hotels.Add(h);
+            }
         }
 
 
