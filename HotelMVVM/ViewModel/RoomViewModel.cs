@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using HotelMVVM.Handler;
 using HotelMVVM.Model;
 
 namespace HotelMVVM.ViewModel
@@ -31,6 +32,8 @@ namespace HotelMVVM.ViewModel
         public RoomViewModel()
         {
             RoomCatalogSingleton = RoomCatalogSingleton.Instance;
+            NewRoom = new Room();
+            RoomHandler = new Handler.RoomHandler(this);
 
         }
 
