@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Handler\HotelHandler.cs" />
+    <Compile Include="Handler\RoomHandler.cs" />
     <Compile Include="Model\Hotel.cs" />
     <Compile Include="Model\HotelCatalogSingleton.cs" />
     <Compile Include="Model\Room.cs" />
