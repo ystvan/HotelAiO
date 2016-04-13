@@ -25,7 +25,7 @@ namespace HotelMVVM.Model
         }
         public override string ToString()
         {
-            return string.Format("Hotelno: {0}, \nName: {1},\nAddress: {2}", Hotel_No, Hotel_Name, Hotel_Address);
+            return string.Format("Hotelno: {0}, \nName: {1},\nAddress: {2}\n\n", Hotel_No, Hotel_Name, Hotel_Address);
         }
 
     }

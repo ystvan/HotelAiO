@@ -27,7 +27,7 @@ namespace HotelMVVM.Model
         }
         public override string ToString()
         {
-            return string.Format("RoomNo: {0}, In which hotel: {1}, Type: {2} Price per night:", Room_No, Hotel_No, Room_Type, Room_Price);
+            return string.Format("RoomNo: {0}, In which hotel: {1}, Type: {2} Price per night: {3}", Room_No, Hotel_No, Room_Type, Room_Price);
         }
     }
 }

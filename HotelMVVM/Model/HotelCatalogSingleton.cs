@@ -33,28 +33,6 @@ namespace HotelMVVM.Model
 
         }
 
-        public void Add(int Hotel_No, string Name, string Address)
-        {
-            Hotels.Add(new Hotel(Hotel_No, Name, Address));
-            
-        }
-
-        public void Remove(Hotel thisHotel)
-        {
-            Hotels.Remove(thisHotel);
-
-        }
-
-        public void Add(int RooRoom_No, int Hotel_No, string Room_Type, string Room_Price)
-        {
-            Rooms.Add(new Room(Hotel_No, Hotel_No, Room_Type, Room_Price));
-
-        }
-
-        public void Remove(Room thisRoom)
-        {
-            Rooms.Remove(thisRoom);
-
-        }
+        
     }
 }
