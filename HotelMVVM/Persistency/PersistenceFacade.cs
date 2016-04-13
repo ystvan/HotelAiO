@@ -121,5 +121,51 @@ namespace HotelMVVM.Persistency
             }
         }
 
+        public void DeleteRoom(Room selectedRoom)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(ServerUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var room = selectedRoom.Room_No;
+                try
+                {
+                    string deleteUrl = "api/Rooms/" + room;
+                    var response = client.DeleteAsync(deleteUrl).Result;
+
+
+                }
+                catch (Exception ex)
+                {
+                    new MessageDialog(ex.Message).ShowAsync();
+                }
+
+            };
+        }
+
+        public void SaveRoom(Room room)
+        {
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri(ServerUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                try
+                {
+                    string postBody = JsonConvert.SerializeObject(room);
+                    var response = client.PostAsync("api/Rooms", new StringContent(postBody, Encoding.UTF8, "application/json")).Result;
+                }
+
+                catch (Exception ex)
+                {
+                    new MessageDialog(ex.Message).ShowAsync();
+                }
+            }
+
+        }
+
     }
 }

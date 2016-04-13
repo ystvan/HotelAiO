@@ -19,11 +19,18 @@ namespace HotelMVVM.Model
 
         public ObservableCollection<Hotel> Hotels { get; set; }
 
+        public ObservableCollection<Room> Rooms { get; set; }
+        
         private HotelCatalogSingleton()
         {
             Hotels = new ObservableCollection<Hotel>();
 
             Hotels = new ObservableCollection<Hotel>(new PersistenceFacade().GetHotels());
+
+            Rooms = new ObservableCollection<Room>();
+
+            Rooms = new ObservableCollection<Room>(new PersistenceFacade().GetRooms());
+
         }
 
         public void Add(int Hotel_No, string Name, string Address)
@@ -35,6 +42,18 @@ namespace HotelMVVM.Model
         public void Remove(Hotel thisHotel)
         {
             Hotels.Remove(thisHotel);
+
+        }
+
+        public void Add(int RooRoom_No, int Hotel_No, string Room_Type, string Room_Price)
+        {
+            Rooms.Add(new Room(Hotel_No, Hotel_No, Room_Type, Room_Price));
+
+        }
+
+        public void Remove(Room thisRoom)
+        {
+            Rooms.Remove(thisRoom);
 
         }
     }

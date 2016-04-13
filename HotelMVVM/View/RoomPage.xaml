@@ -5,9 +5,72 @@
     xmlns:local="using:HotelMVVM.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="using:HotelMVVM.ViewModel"
     mc:Ignorable="d">
 
+
+    <Page.DataContext>
+        <viewModel:HotelViewModel/>
+    </Page.DataContext>
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+        <StackPanel Orientation="Horizontal" x:Name="MainPanel">
+            <ListView x:Name="RoomDbListView" 
+                      SelectedItem="{Binding SelectedRoom, Mode=TwoWay}"
+                      ItemsSource="{Binding HotelCatalogSingleton.Rooms, Mode=TwoWay}" 
+                      HorizontalAlignment="Left" Width="826"/>
+            <StackPanel x:Name="RightPanel">
+
+                <StackPanel x:Name="RoomsControlTextPanel"
+                            Orientation="Vertical"
+                            VerticalAlignment="Top">
+
+                    <TextBlock x:Name="RoomNumberTextBlock" 
+                               Text="Room Number"/>
+                    <TextBox x:Name="RoomNumberTextBox" 
+                             PlaceholderText="Specify an ID"
+                             Text="{Binding NewRoom.Room_No, Mode=TwoWay}"/>
+                    <TextBlock x:Name="HotelNumberTextBlock" 
+                               Text="Hotel Number"/>
+                    <TextBox x:Name="HotelNumberTextBox" 
+                             PlaceholderText="yeha"
+                             Text="{Binding NewRoom.Hotel_No, Mode=TwoWay}"/>
+                    <TextBlock x:Name="RoomTypeTextBlock" 
+                               Text="Room Type"/>
+                    <TextBox x:Name="RoomTypeTextBox" 
+                             PlaceholderText="room type"
+                             Text="{Binding NewRoom.Room_Type, Mode=TwoWay}"/>
+                    <TextBlock x:Name="RoomPriceTextBlock" 
+                               Text="Room Price"/>
+                    <TextBox x:Name="RoomPriceTextBox" 
+                             PlaceholderText="room price"
+                             Text="{Binding NewRoom.Room_Price, Mode=TwoWay}"/>
+
+                </StackPanel>
+
+                <StackPanel x:Name="RoomsControlButtonsPanel"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Bottom">
+
+                    <Button Content="Create Room" 
+                            BorderBrush="Black"
+                            Margin="10,10,10,10"
+                            Command="{Binding CreateRoomCommand}"/>
+
+                    <Button Content="Delete Room" 
+                            BorderBrush="Black" 
+                            Margin="0,10,10,10" 
+                            Command="{Binding DeleteRoomCommand}"/>
+
+                    <Button Content="Update Room" 
+                            BorderBrush="Black" 
+                            Margin="0,10,10,10"/>
+                </StackPanel>
+
+            </StackPanel>
+        </StackPanel>
+
     </Grid>
+    
 </Page>

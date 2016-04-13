@@ -16,14 +16,29 @@ namespace HotelMVVM.ViewModel
     {
         public HotelCatalogSingleton HotelCatalogSingleton { get; set; }
         public Handler.HotelHandler HotelHandler { get; set; }
+        public Handler.RoomHandler RoomHandler { get; set; }
+
         public ICommand CreateCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+
+        public ICommand CreateRoomCommand { get; set; }
+        public ICommand DeleteRoomCommand { get; set; }
 
         public Hotel NewHotel
         {
             get { return _newHotel; }
-            set { _newHotel = value; OnPropertyChanged(); }
+            set { _newHotel = value;
+                    OnPropertyChanged(); }
         }
+
+        public Room NewRoom
+        {
+            get { return _newRoom; }
+            set { _newRoom = value;
+                    OnPropertyChanged(); }
+        }
+
+        private Room _newRoom;
 
         private Hotel _newHotel;
         
@@ -31,13 +46,17 @@ namespace HotelMVVM.ViewModel
         {
             HotelCatalogSingleton = HotelCatalogSingleton.Instance;
             NewHotel = new Hotel();
+            NewRoom = new Room();
             HotelHandler = new Handler.HotelHandler(this);
+            RoomHandler = new Handler.RoomHandler(this);
             CreateCommand = new RelayCommand(HotelHandler.CreateHotel);
             DeleteCommand = new RelayCommand(HotelHandler.DeleteHotel);
-
+            CreateRoomCommand = new RelayCommand(RoomHandler.CreateRoom);
+            DeleteRoomCommand = new RelayCommand(RoomHandler.DeleteRoom);
         }
 
         public static Hotel SelectedHotel { get; set; }
+        public static Room SelectedRoom { get; set; }
         
         public event PropertyChangedEventHandler PropertyChanged;
 

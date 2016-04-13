@@ -4,30 +4,51 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HotelMVVM.Model;
+using HotelMVVM.Persistency;
 using HotelMVVM.ViewModel;
 
 namespace HotelMVVM.Handler
 {
     class RoomHandler
     {
-        public RoomViewModel RoomViewModel { get; set; }
+        public HotelViewModel HotelViewModel { get; set; }
 
-        public RoomHandler(RoomViewModel roomViewModel)
+        public RoomHandler(HotelViewModel hotelViewModel)
         {
-            RoomViewModel = roomViewModel;
+            HotelViewModel = hotelViewModel;
         }
 
         public void CreateRoom()
         {
-            Room room = new Room(RoomViewModel.NewRoom.Room_No, RoomViewModel.NewRoom.Hotel_No, 
-                                    RoomViewModel.NewRoom.Room_Type, RoomViewModel.NewRoom.Room_Price);
+            Room room = new Room(HotelViewModel.NewRoom.Room_No, HotelViewModel.NewRoom.Hotel_No, 
+                                    HotelViewModel.NewRoom.Room_Type, HotelViewModel.NewRoom.Room_Price);
 
+            new PersistenceFacade().SaveRoom(room);
 
+            var rooms = new PersistenceFacade().GetRooms();
+
+            HotelViewModel.HotelCatalogSingleton.Rooms.Clear();
+            foreach (var r in rooms)
+            {
+                HotelViewModel.HotelCatalogSingleton.Rooms.Add(r);
+            }
+
+            HotelViewModel.NewRoom.Room_No = 0;
+            HotelViewModel.NewRoom.Hotel_No = 0;
+            HotelViewModel.NewRoom.Room_Type = "";
+            HotelViewModel.NewRoom.Room_Price = "";
         }
 
         public void DeleteRoom()
         {
-            
+            new PersistenceFacade().DeleteRoom(HotelViewModel.SelectedRoom);
+            var rooms = new PersistenceFacade().GetRooms();
+
+            HotelViewModel.HotelCatalogSingleton.Rooms.Clear();
+            foreach (var r in rooms)
+            {
+                HotelViewModel.HotelCatalogSingleton.Rooms.Add(r);
+            }
         }
     }
 }
