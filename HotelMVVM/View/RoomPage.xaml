@@ -13,7 +13,7 @@
             <CommandBar.Content>
                 <Grid/>
             </CommandBar.Content>
-            <AppBarButton Icon="Switch" Label="appbarbutton">
+            <AppBarButton Icon="Switch" Label="Go to Hotels">
                 <Interactivity:Interaction.Behaviors>
                     <Core:EventTriggerBehavior EventName="Click">
                         <Core:NavigateToPageAction TargetPage="HotelMVVM.View.HotelPage"/>
@@ -30,12 +30,12 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <StackPanel Orientation="Horizontal" x:Name="MainPanel">
+        <StackPanel Orientation="Horizontal" x:Name="MainPanel" Background="#FF2F81D3">
             <ListView x:Name="RoomDbListView" 
 				SelectedItem="{Binding SelectedRoom, Mode=TwoWay}"
 				ItemsSource="{Binding HotelCatalogSingleton.Rooms, Mode=TwoWay}" 
-				HorizontalAlignment="Left" Width="826"/>
-            <StackPanel x:Name="RightPanel">
+				HorizontalAlignment="Left" Width="800" Background="#FF48B265" FontWeight="Bold" FontSize="48"/>
+            <StackPanel x:Name="RightPanel" Margin="50,50,50,50">
 
                 <StackPanel x:Name="RoomsControlTextPanel"
 					Orientation="Vertical"
